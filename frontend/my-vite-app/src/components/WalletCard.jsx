@@ -1,8 +1,7 @@
 import { Box, Text, Icon } from '@chakra-ui/react';
 import { FaWallet } from 'react-icons/fa';
-import { styled } from '../stitches.config.js';
 
-export function WalletCard() {
+export function WalletCard({ balance }) {
   return (
     <Box
       p={5}

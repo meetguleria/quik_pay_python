@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import { Box, Text, VStack, HStack } from '@chakra-ui/react';
 import { WalletCard } from './components/WalletCard';
 import { WalletInfo } from './components/WalletInfo';
@@ -12,7 +14,7 @@ const AppContainer = styled('div', {
   padding: '20px',
   gap: '20px',
   boxSizing: 'border-box',
-})
+});
 
 const Header = styled('h1', {
   fontSize: '2rem',
@@ -26,24 +28,38 @@ const CardsContainer = styled('div', {
   width: '100%',
   maxWidth: '1200px',
   gap: '20px',
-})
+});
+
 function App() {
+  const [balance, setBalance] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+
+  useEffect(() => {
+    const ws = new WebSocket('ws://127.0.0.1:8000/ws/path');
+
+    ws.onopen = () => console.log('WebSocket connection opened.');
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'balanceUpdate') {
+        setBalance(data.balance);
+      } else if (data.type === 'transactionUpdate') {
+        setTransactions(data.transactions);
+      }
+    };
+
+    ws.onclose = () => console.log('WebSocket connection closed.');
+
+    return () => ws.close();
+  }, []);
+
   return (
-    // <>
-    // <AppContainer>
-    // <Header>Quik Pay</Header>
-    //   <CardsContainer>
-    //   <WalletCard />
-    //   <WalletInfo />
-    //   </CardsContainer>
-    // </AppContainer>
-    // </>
     <>
       <VStack spacing={8} align="stretch" minH="100vh" p={5} bg="gray.800">
         <Text fontSize="2xl" color="white" textAlign="center">Quik Pay</Text>
         <HStack spacing={5} justifyContent="center">
-          <WalletCard />
-          <WalletInfo />
+          <WalletCard balance={balance} />
+          <WalletInfo transactions={transactions} />
         </HStack>
       </VStack>
     </>
