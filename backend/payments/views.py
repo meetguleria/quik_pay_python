@@ -2,15 +2,17 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from .models import Wallet, Transaction
 from .models import Transaction
 import json
+from decimal import Decimal
 
 class TransactionsAndBalanceView(View):
   def get(self, request, *args, **kwargs):
-    initial_balance = 50000 # Starting balance
+    wallet, _ = Wallet.objects.get_or_create(defaults={"balance": Decimal("50000")})
     transactions = Transaction.objects.all().order_by('-date')
-    spent_amount = sum(transaction.amount for transaction in transactions)
-    current_balance = initial_balance - spent_amount
+    # spent_amount = sum(transaction.amount for transaction in transactions)
+    # current_balance = initial_balance - spent_amount
 
     transactions_data = [
       {
@@ -22,7 +24,7 @@ class TransactionsAndBalanceView(View):
     ]
 
     data = {
-      "balance": float(current_balance),
+      "balance": float(wallet.balance),
       "transactions": transactions_data,
     }
     return JsonResponse(data)

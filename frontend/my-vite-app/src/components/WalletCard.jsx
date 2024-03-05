@@ -13,7 +13,8 @@ export function WalletCard({ balance }) {
       color="white"
     >
       <Icon as={FaWallet} w={6} h={6} mb={4} />
-      <Text mt={4}>Your Wallet</Text>
+      <Text mt={4}>Your Quik Pay Wallet</Text>
+      <Text fontSize="xl">Balance: ${balance}</Text>
     </Box>
   );
 }
