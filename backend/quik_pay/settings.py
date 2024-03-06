@@ -10,7 +10,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -97,6 +97,6 @@ CHANNEL_LAYERS = {
     'BACKEND': 'channels_redis.core.RedisChannelLayer',
     'CONFIG': {
       "hosts": [('127.0.0.1', 6379)],
-    }
-  }
+    },
+  },
 }

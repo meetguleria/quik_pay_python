@@ -35,17 +35,18 @@ class CreateTransactionView(View):
     try:
       data = json.loads(request.body)
       recipient = data['recipient']
-      amount = data['amount']
+      amount = Decimal(data['amount'])
       purpose = data['purpose']
 
-      # Validate the transaction amount
-      if amount  <= 0 or amount > 50000:
-        return HttpResponseBadRequest("Invalid transaction amount.")
+      wallet = Wallet.objects.first()
+      if not wallet or amount <= 0 or wallet.balance < amount:
+        return HttpResponseBadRequest("Invalid transaction amount or insufficient balance.")
 
       # Create and save the new transaction
-      transaction = Transaction(recipient=recipient, amount=amount, purpose=purpose)
-      transaction.save()
-
+      Transaction.objects.create(recipient=recipient, amount=amount, purpose=purpose)
+      wallet.balance -= amount
+      wallet.save()
+      
       #Return the new balance and transaction
       return JsonResponse({"message": "Transaction successful"})
     except Exception as e:

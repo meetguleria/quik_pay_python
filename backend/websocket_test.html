@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+    <script type="text/javascript">
+        var ws = new WebSocket("ws://127.0.0.1:8000/ws/path/");  // Update with your WebSocket path
+        ws.onopen = function() {
+            console.log("Connected");
+            ws.send(JSON.stringify({"action": "test"}));  // Example send action
+        };
+        ws.onmessage = function(event) {
+            var data = JSON.parse(event.data);
+            console.log("Data received: ", data);
+        };
+        ws.onclose = function() {
+            console.log("Disconnected");
+        };
+    </script>
+</head>
+<body>
+    <h1>WebSocket Test</h1>
+</body>
+</html>
