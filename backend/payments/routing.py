@@ -1,6 +1,6 @@
 from django.urls import path
-from . import consumers
+from .consumers import TransactionConsumer
 
 websocket_urlpatterns = [
-  path('ws/path/', consumers.YourConsumer.as_asgi()),
+  path('ws/payments/', TransactionConsumer.as_asgi()),
 ]

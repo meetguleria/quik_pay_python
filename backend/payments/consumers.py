@@ -1,13 +1,16 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
+import logging
 import json
 from .models import Wallet, Recipient, Transaction
 from channels.db import database_sync_to_async
 from django.db.models import F
 from decimal import Decimal
 
-class YourConsumer(AsyncWebsocketConsumer):
+logger = logging.getLogger(__name__)
+class TransactionConsumer(AsyncWebsocketConsumer):
   async def connect(self):
     await self.accept()
+    logger.info("WebSocket connected.")
     await self.send_initial_data()
     # Join a group to receive updates
     await self.channel_layer.group_add("wallet_group", self.channel_name)
@@ -15,8 +18,10 @@ class YourConsumer(AsyncWebsocketConsumer):
   async def disconnect(self, close_code):
     # Leave the group on disconnect
     await self.channel_layer.group_discard("wallet_group", self.channel_name)
+    logger.info(f"WebSocket disconnected; close_code: {close_code}")
 
   async def receive(self, text_data=None, bytes_data=None):
+    logger.info(f"Received data; text_data: {text_data}, bytes_data: {bytes_data}")
     text_data_json = json.loads(text_data)
     action = text_data_json.get('action')
 
@@ -36,6 +41,7 @@ class YourConsumer(AsyncWebsocketConsumer):
       'balance': balance,
       'recipients': recipients
     }))
+    logger.info("Sent initial data.")
 
   @database_sync_to_async
   def get_wallet_balance(self):
@@ -73,10 +79,12 @@ class YourConsumer(AsyncWebsocketConsumer):
         "transactions": transactions,
       }
     )
+    logger.info("Broadcasted update.")
 
   async def send_update(self, event):
     # Method to handle sending the message to the WebSocket
     await self.send(text_data=json.dumps(event))
+    logger.info(f"Sent update; event: {event}")
 
   @database_sync_to_async
   def get_recent_transactions(self):

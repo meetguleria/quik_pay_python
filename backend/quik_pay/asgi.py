@@ -13,11 +13,9 @@ from payments.routing import websocket_urlpatterns
 application = ProtocolTypeRouter({
   # HTTP requests are handled by Django's ASGI application
   "http": django_asgi_app,
-  "websocket": AllowedHostsOriginValidator(
-    AuthMiddlewareStack(
+  "websocket": AuthMiddlewareStack(
       URLRouter(
         websocket_urlpatterns #WebSocket
       )
     )
-  ),
 })
