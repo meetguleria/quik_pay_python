@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Box, Text, VStack, HStack } from '@chakra-ui/react';
+import { Grid, Text, VStack, HStack } from '@chakra-ui/react';
 import { WalletCard } from './components/WalletCard';
 import { WalletInfo } from './components/WalletInfo';
 import { RecipientsList } from './components/RecipientsList';
+import AnimatedBackground from './components/AnimatedBackground';
 
 function App() {
   const [balance, setBalance] = useState(0);
@@ -60,13 +61,15 @@ function App() {
 
   return (
     <>
-      <VStack spacing={8} align="stretch" minH="100vh" p={5} bg="gray.800">
+    <AnimatedBackground />
+      <VStack spacing={8} align="stretch" minH="100vh" p={5} bg="transparent">
         <Text fontSize="2xl" color="white" textAlign="center">Quik Pay</Text>
-        <HStack spacing={5} justifyContent="center">
+        <Grid templateColumns={{ sm: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }} gap={6}>
           <WalletCard balance={balance} />
           <WalletInfo transactions={transactions} />
-          <RecipientsList recipients={recipients} />
-        </HStack>
+          </Grid>
+
+            <RecipientsList recipients={recipients} width="100%"/>
       </VStack>
     </>
   );

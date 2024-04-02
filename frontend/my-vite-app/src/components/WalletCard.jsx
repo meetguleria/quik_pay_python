@@ -9,7 +9,7 @@ export function WalletCard({ balance }) {
       borderWidth="1px"
       flex="1"
       borderRadius="md"
-      bgGradient="linear(to-l, #7928CA, #FF0080)"
+      bgGradient="linear(to-r, #EC407A, #AB47BC)"
       color="white"
     >
       <Icon as={FaWallet} w={6} h={6} mb={4} />
