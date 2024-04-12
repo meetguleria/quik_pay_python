@@ -1,22 +1,23 @@
 import { Box, Text, VStack } from '@chakra-ui/react';
+import RecipientCard from './RecipientCard';
 
 export const RecipientsList = ({ recipients }) => {
+  console.log(recipients);
+
   return (
-<VStack bgGradient="linear(to-r, #FF416C, #FF4B2B)" p={4} borderRadius="md" w="100%" align="stretch">
-      <Text fontSize="lg" mb={2}>Recipients:</Text>
-      {recipients.map((recipient, index) => (
-        <Box 
-        p={5}
-        shadow="md"
-        borderWidth="1px"
-        flex="1"
-        borderRadius="md"
-        bgGradient="linear(to-r, #EC407A, #AB47BC)"
-        color="white"
-        >
-          {recipient}
-        </Box>
+    <VStack 
+      p={4} 
+      borderRadius="md" 
+      w="100%" 
+      align="stretch"
+      bg="rgba(74, 20, 140, 0.85)"
+      backdropFilter="blur(10px)"
+      border="1px solid rgba(255, 255, 255, 0.2)"
+    >
+      <Text fontSize="lg" mb={2} color="white">Recipients:</Text>
+      {recipients.map((recipient) => (
+        <RecipientCard key={recipient.id} recipient={recipient} />
       ))}
-      </VStack>
+    </VStack>
   );
 };

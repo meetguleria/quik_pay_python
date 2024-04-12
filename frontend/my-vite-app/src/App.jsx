@@ -68,7 +68,6 @@ function App() {
           <WalletCard balance={balance} />
           <WalletInfo transactions={transactions} />
           </Grid>
-
             <RecipientsList recipients={recipients} width="100%"/>
       </VStack>
     </>

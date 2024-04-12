@@ -4,19 +4,26 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View
 from .models import Wallet, Transaction
 from .models import Transaction
+from .models import Recipient
 import json
 from decimal import Decimal
 
+def get_recipients(request):
+  recipients = Recipient.objects.all()
+  recipients_data = [
+    {"name": recipient.name, "category": recipient.category}
+    for recipient in recipients
+  ]
+  return JsonResponse({"recipients": recipients_data})
 class TransactionsAndBalanceView(View):
   def get(self, request, *args, **kwargs):
     wallet, _ = Wallet.objects.get_or_create(defaults={"balance": Decimal("50000")})
-    transactions = Transaction.objects.all().order_by('-date')
-    # spent_amount = sum(transaction.amount for transaction in transactions)
-    # current_balance = initial_balance - spent_amount
+    transactions = Transaction.objects.select_related('recipient').all().order_by('-date')
 
     transactions_data = [
       {
-        "recipient": transaction.recipient,
+        "recipient": transaction.recipient.name,
+        "category": transaction.recipient.category,
         "amount": float(transaction.amount),
         "purpose": transaction.purpose,
         "date": transaction.date.strftime('%Y-%m-%d')
