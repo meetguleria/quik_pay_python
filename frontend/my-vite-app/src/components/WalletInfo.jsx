@@ -2,15 +2,15 @@ import { Box, Text, VStack, Flex } from '@chakra-ui/react';
 
 export function WalletInfo({ transactions = [] }) {
   return (
- <Box
-   p={5}
-   shadow="md"
-   borderWidth="1px"
-   flex="1"
-   borderRadius="md"
-   bgGradient="linear(to-r, #EC407A, #AB47BC)"
-   color="white"
- >
+<Box
+    p={5}
+    shadow="md"
+    borderWidth="1px"
+    flex="1"
+    borderRadius="md"
+    bgGradient="linear(to-r, #EC407A, #AB47BC)"
+    color="white"
+  >
       <Text fontSize="xl" mb={4}>Recent Transactions:</Text>
       <VStack spacing={3} align="stretch">
       {(transactions || []).map((transaction, index) => (

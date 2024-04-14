@@ -4,23 +4,25 @@ import { FaSeedling, FaMobileAlt, FaHome, FaWrench, FaPlay,
 
 const getCategoryIcon = (category) => {
   const categoryIcons = {
-    "Green Groceries": FaSeedling,
-    "City Electronics": FaMobileAlt,
-    "Home Sweet Home Rentals": FaHome,
-    "QuickFix Utilities": FaWrench,
-    "Prime Video Subscriptions": FaPlay,
-    "Sunny Savings Bank": FaPiggyBank,
-    "Happy Entertainment": FaLaughBeam,
-    "Tech Innovations": FaLaptop,
-    "Daily Fashion": FaTshirt,
-    "Health Plus Pharmacy": FaCapsules,
+    "Grocery": FaSeedling,
+    "Electronics": FaMobileAlt,
+    "Real Estate": FaHome,
+    "Utilities": FaWrench,
+    "Banking": FaPiggyBank,
+    "Entertainment": FaLaughBeam,
+    "Technology": FaLaptop,
+    "Retail": FaTshirt,
+    "Healthcare": FaCapsules,
   };
 
-  return categoryIcons[category] || FaQuestion;
+  return categoryIcons[category] || FaQuestion
 };
+
 
 const RecipientCard = ({ recipient }) => {
   const IconComponent = getCategoryIcon(recipient.category);
+
+  console.log("Rendering RecipientCard with:", recipient);
 
   return (
     <Box
